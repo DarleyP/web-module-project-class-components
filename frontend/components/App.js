@@ -11,8 +11,8 @@ export default class App extends React.Component {
       todos: [
         {
           task: 'Organize Garage',
-          id: 1528817077286, 
-          completed:false
+          id: 1528817077286,
+          completed: false
         },
         {
           task: 'Bake Cookies',
@@ -23,15 +23,57 @@ export default class App extends React.Component {
     }
   }
 
+
+  handleToggle = (clickId) => {
+
+    this.setState({
+      ...this.state,
+      todos: this.state.todos.map(todo => {
+        if (todo.id === clickId) {
+          return {
+            ...todo,
+            completed: !todo.completed
+          }
+        }
+          return todo
+        
+      })
+    })
+  }
+
+  handleAdd = (task) => {
+
+    const newTodo = {
+      task: task,
+      id: Date.now(),
+      completed: false
+    }
+
+    this.setState({
+      ...this.state,
+      todos: [...this.state.todos, newTodo]
+
+
+    });
+  }
+
+  handleClear = () => {
+    this.setState({
+      ...this.state,
+      todos: this.state.todos.filter(todo => {
+        return (todo.completed === false);
+      })
+    });
+  }
+
   render() {
     const { todos } = this.state;
     return (
-    
       <div>
         <h1>To Do List </h1>
-        <TodoList todos={todos} />
-        <Form/>
-        <button>Clear</button>
+        <TodoList handleToggle = {this.handleToggle} todos={todos} />
+        <Form handleAdd={this.handleAdd} />
+        <button onClick={this.handleClear}>Clear</button>
       </div>
     )
   }
